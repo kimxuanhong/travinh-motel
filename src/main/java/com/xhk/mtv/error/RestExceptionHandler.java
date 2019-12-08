@@ -39,11 +39,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<Object> handleApiException(ApiException ex) {
+        ex.printStackTrace();
         return ResponseEntity.badRequest().body(ex.getErrorDetails());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
+        ex.printStackTrace();
         ApiErrorDetails apiErrorDetails = new ApiErrorDetails(ApiErrorType.SERVER_ERROR, ErrorMessage.INTERNAl_ERROR);
         return ResponseEntity.badRequest().body(apiErrorDetails);
     }
