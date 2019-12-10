@@ -1,21 +1,19 @@
 package com.xhk.mtv.controller;
 
-import com.xhk.mtv.annotation.CustomResponse;
-import com.xhk.mtv.error.ApiException;
+import com.xhk.mtv.request.LoginRequest;
 import com.xhk.mtv.response.LoginResponse;
 import com.xhk.mtv.service.RootService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/home")
-@CustomResponse
+@RequestMapping
 public class RootController {
 
     @Autowired
@@ -24,8 +22,13 @@ public class RootController {
     @ApiOperation("Get blog")
     @GetMapping("/home")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse getBlogList() throws ApiException {
+    public LoginResponse getBlogList(){
       return rootService.login();
    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        return null;
+    }
 
 }

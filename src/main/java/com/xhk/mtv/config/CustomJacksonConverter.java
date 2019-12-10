@@ -1,7 +1,7 @@
 package com.xhk.mtv.config;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.xhk.mtv.annotation.CustomResponse;
-import com.xhk.mtv.error.ApiException;
 import com.xhk.mtv.error.response.ApiErrorDetails;
 import com.xhk.mtv.error.response.ErrorResponse;
 import com.xhk.mtv.error.response.SuccessResponse;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 @Component
 public class CustomJacksonConverter extends MappingJackson2HttpMessageConverter {
     public CustomJacksonConverter(Jackson2ObjectMapperBuilder builder) {
-        super(builder.build());
+        super(builder.propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE).build());
     }
 
     @Override
