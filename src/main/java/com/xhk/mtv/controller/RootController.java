@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,8 +23,9 @@ public class RootController {
     @ApiOperation("Get blog")
     @GetMapping("/home")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse getBlogList(){
-      return rootService.login();
+    @Secured("ROLE_USER")
+    public LoginResponse getHome(){
+      return rootService.getHome();
    }
 
     @PostMapping("/login")

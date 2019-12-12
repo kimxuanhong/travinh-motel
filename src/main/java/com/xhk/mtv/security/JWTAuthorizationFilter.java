@@ -1,5 +1,9 @@
 package com.xhk.mtv.security;
 
+import com.xhk.mtv.error.ApiErrorType;
+import com.xhk.mtv.error.ErrorMessage;
+import com.xhk.mtv.error.response.ApiErrorDetails;
+import com.xhk.mtv.error.response.ErrorResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,38 +20,45 @@ import java.io.IOException;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
+    private String TOKEN_PREFIX;
+
     private JWTProvider tokenProvider;
 
     private CustomUserDetailsService customUserDetailsService;
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JWTProvider tokenProvider) {
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JWTProvider tokenProvider, String TOKEN_PREFIX) {
         super(authenticationManager);
         this.tokenProvider = tokenProvider;
         this.customUserDetailsService = customUserDetailsService;
+        this.TOKEN_PREFIX = TOKEN_PREFIX;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        try {
+            String jwt = getJwtFromRequest(request);
 
-        String jwt = getJwtFromRequest(request);
+            if (StringUtils.hasText(jwt)) {
+                String email = tokenProvider.verify(jwt);
 
-        if (StringUtils.hasText(jwt)) {
-            String email = tokenProvider.verify(jwt);
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            ErrorResponse<ApiErrorDetails> errorResponse = new ErrorResponse<>(new ApiErrorDetails(ApiErrorType.INVALID_REQUEST, ErrorMessage.MISSING_TOKEN));
+            errorResponse.printResponse(response);
         }
-
-        filterChain.doFilter(request, response);
-        return;
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX + " ")) {
             return bearerToken.substring(7);
         }
         return null;

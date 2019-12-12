@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 public class RootServiceImpl implements RootService {
 
     @Override
-    public LoginResponse login() {
+    public LoginResponse getHome() {
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setRole(0);
         loginResponse.setToken("kjsdhgkvhjzbvxdcjuyhbvfkjhfb");
         return loginResponse;
     }

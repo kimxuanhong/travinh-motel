@@ -34,7 +34,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         user.setPassword(passwordEncoder.encode("111111"));
         user.setLoginStatus(LoginStatus.LOGOUT);
         user.setRegisterStatus(RegisterStatus.COMPLETED);
-        user.setUserRole(UserRole.USER_ROLE);
+        user.setUserRole(UserRole.ROLE_USER);
         user.setGender(Gender.MALE);
         accountRepository.saveAndFlush(user);
 
@@ -47,7 +47,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         admin.setPassword(passwordEncoder.encode("111111"));
         admin.setLoginStatus(LoginStatus.LOGOUT);
         admin.setRegisterStatus(RegisterStatus.COMPLETED);
-        admin.setUserRole(UserRole.ADMIN_ROLE);
+        admin.setUserRole(UserRole.ROLE_ADMIN);
         admin.setGender(Gender.MALE);
         accountRepository.saveAndFlush(admin);
     }

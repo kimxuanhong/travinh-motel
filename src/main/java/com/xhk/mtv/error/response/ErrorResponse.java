@@ -12,4 +12,8 @@ public class ErrorResponse<T> extends Response<T> {
         this.setStatus(ResponseStatus.FAILED);
         this.setData(data);
     }
+
+    public ErrorResponse() {
+        this.setStatus(ResponseStatus.FAILED);
+    }
 }

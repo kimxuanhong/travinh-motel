@@ -24,7 +24,7 @@ public class CustomUserDetails extends User {
     private String password;
 
     public CustomUserDetails(Long id, String name, String phoneNumber, String email, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(phoneNumber, password, authorities);
+        super(email, password, authorities);
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;

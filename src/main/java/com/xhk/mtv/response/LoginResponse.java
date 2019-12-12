@@ -1,6 +1,7 @@
 package com.xhk.mtv.response;
 
 import com.xhk.mtv.annotation.CustomResponse;
+import com.xhk.mtv.security.CustomUserDetails;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,6 @@ import lombok.Setter;
 @Setter
 @CustomResponse
 public class LoginResponse {
-    private String userName;
     private String token;
-    private int role;
+    private CustomUserDetails details;
 }
