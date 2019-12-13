@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -55,6 +56,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
         ex.printStackTrace();
         ApiErrorDetails apiErrorDetails = new ApiErrorDetails(ApiErrorType.INVALID_AUTHORITY, ErrorMessage.INVALID_AUTHORIZATION);
+        return ResponseEntity.badRequest().body(apiErrorDetails);
+    }
+
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+    public ResponseEntity<Object> handleVersionEntityException(ObjectOptimisticLockingFailureException ex) {
+        ex.printStackTrace();
+        ApiErrorDetails apiErrorDetails = new ApiErrorDetails(ApiErrorType.INVALID_REQUEST, ErrorMessage.OLD_VERSION_OBJECT);
         return ResponseEntity.badRequest().body(apiErrorDetails);
     }
 }
