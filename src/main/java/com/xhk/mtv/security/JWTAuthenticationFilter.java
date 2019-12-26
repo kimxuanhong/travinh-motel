@@ -41,7 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) {
         LoginRequest payload = (new ObjectMapper()).readValue(req.getInputStream(), LoginRequest.class);
         try {
-            if (StringUtils.isEmpty(payload.getUsernameOrEmail())) {
+            if (StringUtils.isEmpty(payload.getUserName())) {
                 throw new UsernameIncorrectException(ErrorMessage.MISSING_EMAIL_ADDRESS.name());
             }
 
@@ -49,13 +49,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 throw new PasswordIncorrectException(ErrorMessage.MISSING_PASSWORD.name());
             }
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(payload.getUsernameOrEmail(), payload.getPassword());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(payload.getUserName(), payload.getPassword());
             return authenticationManager.authenticate(authentication);
         } catch (Exception ex) {
-            if (ex.getCause() instanceof UsernameIncorrectException) {
+            if (ex instanceof UsernameIncorrectException) {
                 ErrorResponse<ApiErrorDetails> response = new ErrorResponse<>(new ApiErrorDetails(ApiErrorType.LOGIN_ERROR, ErrorMessage.MISSING_EMAIL_ADDRESS));
                 response.printResponse(res);
-            } else if (ex.getCause() instanceof PasswordIncorrectException) {
+            } else if (ex instanceof PasswordIncorrectException) {
                 ErrorResponse<ApiErrorDetails> response = new ErrorResponse<>(new ApiErrorDetails(ApiErrorType.LOGIN_ERROR, ErrorMessage.MISSING_PASSWORD));
                 response.printResponse(res);
             } else {

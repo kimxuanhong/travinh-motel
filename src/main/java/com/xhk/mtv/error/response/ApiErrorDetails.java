@@ -3,7 +3,6 @@ package com.xhk.mtv.error.response;
 import com.xhk.mtv.annotation.CustomResponse;
 import com.xhk.mtv.error.ApiErrorType;
 import com.xhk.mtv.error.ErrorMessage;
-import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,6 @@ import java.util.Arrays;
 
 @Getter
 @Setter
-@ApiModel
 @CustomResponse
 public class ApiErrorDetails {
     private ApiErrorType errorType;

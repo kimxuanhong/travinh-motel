@@ -25,7 +25,7 @@ public enum ErrorMessage {
     INVALID_EMAIL_ADDRESS("Email invalid format."),
     INVALID_LENGTH_OTP_NUMBER("Length of OTP invalid."),
     MISSING_OTP_NUMBER("OTP is null or empty."),
-    INVALID_TOKEN("Token invalid format."),
+    INVALID_FORMAT_TOKEN("Token invalid format."),
     MISSING_DOB("DOB is null or empty."),
     MISSING_REFERENCE_TYPE("Reference type is null or empty."),
     MISSING_USER_ID("user_id is null or empty."),
@@ -37,6 +37,5 @@ public enum ErrorMessage {
 
     ErrorMessage(String desc) {
         this.desc = desc;
-
     }
 }

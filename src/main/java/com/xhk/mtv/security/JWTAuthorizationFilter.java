@@ -51,7 +51,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             filterChain.doFilter(request, response);
         } catch (Exception ex) {
             ex.printStackTrace();
-            ErrorResponse<ApiErrorDetails> errorResponse = new ErrorResponse<>(new ApiErrorDetails(ApiErrorType.INVALID_REQUEST, ErrorMessage.INVALID_TOKEN));
+            ErrorResponse<ApiErrorDetails> errorResponse = new ErrorResponse<>(new ApiErrorDetails(ApiErrorType.INVALID_REQUEST, ErrorMessage.INVALID_FORMAT_TOKEN));
             errorResponse.printResponse(response);
         }
     }
