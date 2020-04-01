@@ -4,16 +4,14 @@ import com.xhk.mtv.model.enums.Gender;
 import com.xhk.mtv.model.enums.LoginStatus;
 import com.xhk.mtv.model.enums.RegisterStatus;
 import com.xhk.mtv.model.enums.UserRole;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Account extends AbstractEntity {
     @Column(unique = true)
@@ -23,8 +21,8 @@ public class Account extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private String password;
-    private String firstName = "";
-    private String lastName = "";
+    private String firstName;
+    private String lastName;
     private String avatarUrl;
     @Enumerated(EnumType.STRING)
     private Gender gender;
