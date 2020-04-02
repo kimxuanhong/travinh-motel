@@ -5,7 +5,10 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.Date;
+
+import static java.time.OffsetDateTime.now;
 
 @Getter
 @Setter
@@ -13,49 +16,21 @@ import java.util.Date;
 @Where(clause = "delete_flag = false")
 public class AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     @Basic(optional = false)
     private boolean deleteFlag;
 
-    /**
-     * The created at.
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private OffsetDateTime createdAt;
 
-    /**
-     * The updated at.
-     */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private OffsetDateTime updatedAt;
 
-    /**
-     * Check version of entity
-     */
-    @Version
-    @Column(columnDefinition = "integer DEFAULT 0", nullable = false)
-    private long version = 0L;
-
-    /**
-     * Pre persist.
-     */
     @PrePersist
-    public void prePersist() {
-        Date date = new Date();
-        createdAt = date;
-        updatedAt = date;
+    public void onPersist() {
+        updatedAt = createdAt = now();
     }
 
-    /**
-     * On persist.
-     */
     @PreUpdate
-    public void preUpdate() {
-        Date date = new Date();
-        updatedAt = date;
+    public void onUpdate() {
+        updatedAt = now();
     }
 }
 

@@ -24,31 +24,33 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        try {
+            //dummy account user
+            Account user = new Account();
+            user.setEmail("xuanhongkim@gmail.com");
+            user.setPhoneNumber("84335898022");
+            user.setFirstName("Hong");
+            user.setLastName("Xuan");
+            user.setPassword(passwordEncoder.encode("111111"));
+            user.setLoginStatus(LoginStatus.LOGOUT);
+            user.setRegisterStatus(RegisterStatus.COMPLETED);
+            user.setUserRole(UserRole.ROLE_USER);
+            user.setGender(Gender.MALE);
+            accountRepository.saveAndFlush(user);
 
-        //dummy account user
-        Account user = new Account();
-        user.setEmail("xuanhongkim@gmail.com");
-        user.setPhoneNumber("84335898022");
-        user.setFirstName("Hong");
-        user.setLastName("Xuan");
-        user.setPassword(passwordEncoder.encode("111111"));
-        user.setLoginStatus(LoginStatus.LOGOUT);
-        user.setRegisterStatus(RegisterStatus.COMPLETED);
-        user.setUserRole(UserRole.ROLE_USER);
-        user.setGender(Gender.MALE);
-        accountRepository.saveAndFlush(user);
-
-        //dummy account user
-        Account admin = new Account();
-        admin.setEmail("kimxuanhong@outlook.com");
-        admin.setPhoneNumber("84335898023");
-        admin.setFirstName("Xuan Hong");
-        admin.setLastName("Kim");
-        admin.setPassword(passwordEncoder.encode("111111"));
-        admin.setLoginStatus(LoginStatus.LOGOUT);
-        admin.setRegisterStatus(RegisterStatus.COMPLETED);
-        admin.setUserRole(UserRole.ROLE_ADMIN);
-        admin.setGender(Gender.MALE);
-        accountRepository.saveAndFlush(admin);
+            //dummy account user
+            Account admin = new Account();
+            admin.setEmail("kimxuanhong@outlook.com");
+            admin.setPhoneNumber("84335898023");
+            admin.setFirstName("Xuan Hong");
+            admin.setLastName("Kim");
+            admin.setPassword(passwordEncoder.encode("111111"));
+            admin.setLoginStatus(LoginStatus.LOGOUT);
+            admin.setRegisterStatus(RegisterStatus.COMPLETED);
+            admin.setUserRole(UserRole.ROLE_ADMIN);
+            admin.setGender(Gender.MALE);
+            accountRepository.saveAndFlush(admin);
+        } catch (Exception e) {
+        }
     }
 }

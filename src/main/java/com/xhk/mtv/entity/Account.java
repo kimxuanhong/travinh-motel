@@ -6,14 +6,14 @@ import com.xhk.mtv.entity.enums.RegisterStatus;
 import com.xhk.mtv.entity.enums.UserRole;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 @Data
 @Entity
 public class Account extends AbstractEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(unique = true)
     private String phoneNumber;
     @Column(unique = true)
