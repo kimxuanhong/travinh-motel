@@ -1,4 +1,4 @@
-package com.xhk.mtv.model.enums;
+package com.xhk.mtv.entity.enums;
 
 public enum LoginStatus {
     LOGIN, LOGOUT

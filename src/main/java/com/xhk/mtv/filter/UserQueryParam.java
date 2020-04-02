@@ -4,7 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
-import com.xhk.mtv.model.QAccount;
+import com.xhk.mtv.entity.QAccount;
 import org.springframework.data.domain.Sort;
 
 public class UserQueryParam extends QueryParam<UserFilterParam> {

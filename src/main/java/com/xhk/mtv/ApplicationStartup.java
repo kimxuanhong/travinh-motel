@@ -1,10 +1,10 @@
 package com.xhk.mtv;
 
-import com.xhk.mtv.model.Account;
-import com.xhk.mtv.model.enums.Gender;
-import com.xhk.mtv.model.enums.LoginStatus;
-import com.xhk.mtv.model.enums.RegisterStatus;
-import com.xhk.mtv.model.enums.UserRole;
+import com.xhk.mtv.entity.Account;
+import com.xhk.mtv.entity.enums.Gender;
+import com.xhk.mtv.entity.enums.LoginStatus;
+import com.xhk.mtv.entity.enums.RegisterStatus;
+import com.xhk.mtv.entity.enums.UserRole;
 import com.xhk.mtv.repository.AccountRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

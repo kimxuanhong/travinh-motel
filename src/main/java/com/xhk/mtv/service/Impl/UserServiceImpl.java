@@ -4,7 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.QBean;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.xhk.mtv.filter.QueryPredicate;
-import com.xhk.mtv.model.QAccount;
+import com.xhk.mtv.entity.QAccount;
 import com.xhk.mtv.response.UserRes;
 import com.xhk.mtv.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

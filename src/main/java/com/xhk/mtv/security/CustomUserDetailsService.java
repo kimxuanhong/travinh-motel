@@ -2,7 +2,7 @@ package com.xhk.mtv.security;
 
 import com.xhk.mtv.error.ErrorMessage;
 import com.xhk.mtv.error.UsernameIncorrectException;
-import com.xhk.mtv.model.Account;
+import com.xhk.mtv.entity.Account;
 import com.xhk.mtv.repository.AccountRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

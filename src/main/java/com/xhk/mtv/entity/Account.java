@@ -1,9 +1,9 @@
-package com.xhk.mtv.model;
+package com.xhk.mtv.entity;
 
-import com.xhk.mtv.model.enums.Gender;
-import com.xhk.mtv.model.enums.LoginStatus;
-import com.xhk.mtv.model.enums.RegisterStatus;
-import com.xhk.mtv.model.enums.UserRole;
+import com.xhk.mtv.entity.enums.Gender;
+import com.xhk.mtv.entity.enums.LoginStatus;
+import com.xhk.mtv.entity.enums.RegisterStatus;
+import com.xhk.mtv.entity.enums.UserRole;
 import lombok.Data;
 
 import javax.persistence.Column;

@@ -1,4 +1,4 @@
-package com.xhk.mtv.model;
+package com.xhk.mtv.entity;
 
 import lombok.Getter;
 import lombok.Setter;

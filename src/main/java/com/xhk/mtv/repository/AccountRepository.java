@@ -1,7 +1,7 @@
 package com.xhk.mtv.repository;
 
-import com.xhk.mtv.model.Account;
-import com.xhk.mtv.model.enums.RegisterStatus;
+import com.xhk.mtv.entity.Account;
+import com.xhk.mtv.entity.enums.RegisterStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
