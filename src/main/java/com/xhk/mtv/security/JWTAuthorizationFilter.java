@@ -1,5 +1,7 @@
 package com.xhk.mtv.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.xhk.mtv.error.ApiErrorType;
 import com.xhk.mtv.error.ErrorMessage;
 import com.xhk.mtv.error.response.ApiErrorDetails;
@@ -39,7 +41,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             String jwt = getJwtFromRequest(request);
 
             if (StringUtils.hasText(jwt)) {
-                String email = tokenProvider.verify(jwt);
+                String userInfo = tokenProvider.verify(jwt);
+                ObjectMapper objectMapper = new ObjectMapper();
+                CustomUserInfo customUserInfo = objectMapper.readValue(userInfo, CustomUserInfo.class);
+                String email = customUserInfo.getEmail();
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

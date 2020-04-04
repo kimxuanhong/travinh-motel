@@ -26,8 +26,8 @@ public abstract class QueryParam<T extends FilterParam> {
     protected abstract OrderSpecifier<?> buildOrderClause();
 
     public final QueryPredicate build(String timezone) {
-        Predicate predicate = buildFilterPredicate(timezone);
-        OrderSpecifier<?> order = buildOrderClause();
-        return new QueryPredicate(order, predicate, getIndex(), getSize());
+        Predicate predicate = this.buildFilterPredicate(timezone);
+        OrderSpecifier<?> order = this.buildOrderClause();
+        return new QueryPredicate(order, predicate, this.getIndex(), this.getSize());
     }
 }

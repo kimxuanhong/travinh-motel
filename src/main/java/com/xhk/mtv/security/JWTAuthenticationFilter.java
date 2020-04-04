@@ -1,6 +1,7 @@
 package com.xhk.mtv.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.xhk.mtv.error.ApiErrorType;
 import com.xhk.mtv.error.ErrorMessage;
 import com.xhk.mtv.error.PasswordIncorrectException;
@@ -70,7 +71,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException {
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
-        String token = jwtProvider.generate(userDetails.getUsername());
+        CustomUserInfo customUserInfo = userDetails.getCustomUserInfo();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String userInfo = objectMapper.writeValueAsString(customUserInfo);
+        String token = jwtProvider.generate(userInfo);
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(TOKEN_PREFIX + " " + token);
         loginResponse.setDetails(userDetails);

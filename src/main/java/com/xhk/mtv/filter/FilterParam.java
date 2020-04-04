@@ -6,6 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class FilterParam {
+public abstract class FilterParam {
     private List<Long> ids = new ArrayList<>();
 }

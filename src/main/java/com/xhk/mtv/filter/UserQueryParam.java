@@ -11,7 +11,7 @@ public class UserQueryParam extends QueryParam<UserFilterParam> {
     @Override
     protected Predicate buildFilterPredicate(String timezone) {
         BooleanBuilder builder = new BooleanBuilder();
-        UserFilterParam filter = getFilter();
+        UserFilterParam filter = this.getFilter();
         QAccount account = QAccount.account;
         if(filter == null) { return builder; }
 
@@ -26,7 +26,7 @@ public class UserQueryParam extends QueryParam<UserFilterParam> {
 
     @Override
     protected OrderSpecifier<?> buildOrderClause() {
-        String orderField = getSort();
+        String orderField = this.getSort();
         if(orderField == null) {
             orderField = "id";
         }
@@ -39,7 +39,6 @@ public class UserQueryParam extends QueryParam<UserFilterParam> {
                 break;
         }
 
-        OrderSpecifier<?> orderSpecifier = getOrder() == Sort.Direction.ASC ? orderExpr.asc() : orderExpr.desc();
-        return orderSpecifier;
+        return this.getOrder() == Sort.Direction.ASC ? orderExpr.asc() : orderExpr.desc();
     }
 }
