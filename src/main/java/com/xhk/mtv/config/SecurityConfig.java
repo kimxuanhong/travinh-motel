@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().addFilterBefore(new CORSFilter(), ChannelProcessingFilter.class).authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**").permitAll()
                 .antMatchers("/v2/api-docs", "/api/docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/images/**", "/audios/**").permitAll()
                 .and()
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailsService, tokenProvider, TOKEN_PREFIX))
