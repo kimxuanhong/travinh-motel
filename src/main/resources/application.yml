@@ -1,0 +1,45 @@
+app:
+  domain:
+    api: http://localhost:8080
+oauth2:
+  facebook:
+    client-id: 2746794028713619
+    client-secret: 70f0a8524bf43ee44bb1f6ebb2280fc0
+    page-login: https://www.facebook.com/dialog/oauth?scope=email+public_profile&client_id=${oauth2.facebook.client-id}&redirect_uri=${oauth2.facebook.redirect-uri}
+    redirect-uri: ${app.domain.api}/oauth2/callback/facebook
+    token: https://graph.facebook.com/oauth/access_token?client_id=
+    user_info: https://graph.facebook.com/v3.0/me?fields=id,first_name,middle_name,last_name,name,email,verified,is_verified,picture.width(250).height(250)&access_token=
+  google:
+    client-id: 81253950712-18c6ccab1ctl1iapcr71rdmv0a0f97nc.apps.googleusercontent.com
+    client-secret: AyYPbxjALdoVtI7rKVVKkQz8
+    grant_type: authorization_code
+    page-login: https://accounts.google.com/o/oauth2/auth?scope=email+profile&redirect_uri=${oauth2.google.redirect-uri}&response_type=code&client_id=${oauth2.google.client-id}&approval_prompt=force
+    redirect-uri: ${app.domain.api}/oauth2/callback/google
+    token: https://accounts.google.com/o/oauth2/token
+    user_info: https://www.googleapis.com/oauth2/v1/userinfo?access_token=
+security:
+  jwt:
+    expire: 864000000
+    prefix: Bearer
+    secret: Akfdi=FnQ23FDSLSDf
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost:3306/mtv?useUnicode=yes&characterEncoding=UTF-8
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+    show-sql: true

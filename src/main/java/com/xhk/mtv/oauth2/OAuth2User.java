@@ -1,7 +1,6 @@
 package com.xhk.mtv.oauth2;
 
-import com.xhk.mtv.model.AbstractEntity;
-import com.xhk.mtv.model.Account;
+import com.xhk.mtv.entity.*;
 import lombok.Getter;
 import lombok.Setter;
 

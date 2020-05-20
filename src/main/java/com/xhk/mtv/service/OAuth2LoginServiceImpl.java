@@ -8,7 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.xhk.mtv.error.response.ResponseStatus;
-import com.xhk.mtv.model.Account;
+import com.xhk.mtv.entity.Account;
 import com.xhk.mtv.oauth2.*;
 import com.xhk.mtv.repository.AccountRepository;
 import com.xhk.mtv.repository.OAuth2UserRepository;
