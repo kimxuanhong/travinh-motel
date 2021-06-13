@@ -1,7 +1,6 @@
 package com.xhk.mtv.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.xhk.mtv.error.ApiErrorType;
 import com.xhk.mtv.error.ErrorMessage;
 import com.xhk.mtv.error.PasswordIncorrectException;
@@ -25,11 +24,11 @@ import java.io.IOException;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private JWTProvider jwtProvider;
+    private final JWTProvider jwtProvider;
 
-    private String TOKEN_PREFIX;
+    private final String TOKEN_PREFIX;
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTProvider jwtProvider, String TOKEN_PREFIX) {
         this.authenticationManager = authenticationManager;

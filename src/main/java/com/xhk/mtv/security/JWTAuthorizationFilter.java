@@ -1,7 +1,6 @@
 package com.xhk.mtv.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.xhk.mtv.error.ApiErrorType;
 import com.xhk.mtv.error.ErrorMessage;
 import com.xhk.mtv.error.response.ApiErrorDetails;
@@ -22,11 +21,11 @@ import java.io.IOException;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private String TOKEN_PREFIX;
+    private final String TOKEN_PREFIX;
 
-    private JWTProvider tokenProvider;
+    private final JWTProvider tokenProvider;
 
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService, JWTProvider tokenProvider, String TOKEN_PREFIX) {
         super(authenticationManager);

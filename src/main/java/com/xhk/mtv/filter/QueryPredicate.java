@@ -28,7 +28,7 @@ public class QueryPredicate {
         int size = getSize();
         query.where(predicate).orderBy(order);
         long totalCount = query.fetchCount();
-        List<T> result = query.offset(index * size).limit(size).fetch();
+        List<T> result = query.offset((long) index * size).limit(size).fetch();
         Pageable pageable = PageRequest.of(index, size, asSpringSort());
         return new PageImpl<>(result, pageable, totalCount);
     }

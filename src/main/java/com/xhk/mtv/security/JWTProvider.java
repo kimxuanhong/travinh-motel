@@ -2,8 +2,6 @@ package com.xhk.mtv.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.xhk.mtv.error.ErrorMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +19,6 @@ public class JWTProvider {
     private String TOKEN_PREFIX;
 
     public String generate(String email) {
-
         return JWT.create()
                 .withSubject(email)
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRE))
