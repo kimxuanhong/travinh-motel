@@ -1,83 +1,132 @@
 package com.xhk.mtv.error;
 
-import com.xhk.mtv.error.response.ApiErrorDetails;
-import org.springframework.http.HttpHeaders;
+import com.xhk.mtv.error.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.xhk.mtv.common.Constants.EMPTY_STRING;
+import static com.xhk.mtv.error.Status.*;
+import static java.util.Optional.ofNullable;
 
 @RestControllerAdvice
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler {
 
-    @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ex.printStackTrace();
-        ApiException errorResponse = new ApiException(ApiErrorType.INVALID_FORMAT, ErrorMessage.INVALID_REQUEST_URL);
-        return ResponseEntity.badRequest().body(errorResponse);
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Object> handleException(BusinessException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(BUSINESS_LOGIC_ERROR, ex.getMessage()));
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    private ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
-        ex.printStackTrace();
-        ApiException errorResponse = new ApiException(ApiErrorType.INVALID_REQUEST, ErrorMessage.INVALID_REQUEST_URL);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> handleException(UsernameNotFoundException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(INVALID_AUTHORIZATION, ex.getMessage()));
     }
 
-    @Override
-    public ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ex.printStackTrace();
-        ApiException errorResponse = new ApiException(ApiErrorType.INVALID_REQUEST, ErrorMessage.INVALID_REQUEST_URL);
-        return ResponseEntity.badRequest().body(errorResponse);
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleException(BadCredentialsException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(INVALID_AUTHORIZATION, ex.getMessage()));
     }
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<Object> handleApiException(ApiException ex) {
-        ex.printStackTrace();
-        return ResponseEntity.badRequest().body(ex.getErrorDetails());
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Object> handleException(NotFoundException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(RESOURCE_NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<Object> handleException(InternalAuthenticationServiceException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(INVALID_AUTHORIZATION, ex.getMessage()));
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Object> handleException(ValidationException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(VALIDATION_EXCEPTION, ex.getMessage()));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<Object> handleException(MissingServletRequestParameterException ex) {
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(MISSING_REQUEST_PARAMETER, ex.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Object> handleException(MethodArgumentTypeMismatchException ex) {
+
+        Map<String, String> details = new HashMap<>();
+        details.put("paramName", ex.getName());
+        details.put("paramValue", ofNullable(ex.getValue()).map(Object::toString).orElse(EMPTY_STRING));
+        details.put("errorMessage", ex.getMessage());
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(METHOD_ARGUMENT_TYPE_MISMATCH, details));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleException(MethodArgumentNotValidException ex) {
+
+        List<Map<String, String>> details = new ArrayList<>();
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(fieldError -> {
+                    Map<String, String> detail = new HashMap<>();
+                    detail.put("objectName", fieldError.getObjectName());
+                    detail.put("field", fieldError.getField());
+                    detail.put("rejectedValue", "" + fieldError.getRejectedValue());
+                    detail.put("errorMessage", fieldError.getDefaultMessage());
+                    details.add(detail);
+                });
+
+        return ResponseEntity
+                .badRequest()
+                .body(ErrorResponse.build(METHOD_ARGUMENT_VALIDATION_FAILED, details));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleException(AccessDeniedException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ErrorResponse.build(FORBIDDEN, ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
-        ex.printStackTrace();
-        ApiErrorDetails apiErrorDetails = new ApiErrorDetails(ApiErrorType.SERVER_ERROR, ErrorMessage.INTERNAl_ERROR);
-        return ResponseEntity.badRequest().body(apiErrorDetails);
-    }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex) {
-        ex.printStackTrace();
-        ApiErrorDetails apiErrorDetails = new ApiErrorDetails(ApiErrorType.INVALID_AUTHORITY, ErrorMessage.INVALID_AUTHORIZATION);
-        return ResponseEntity.badRequest().body(apiErrorDetails);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.build(INTERNAL_SERVER_ERROR, ex.getMessage()));
     }
-
-    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
-    public ResponseEntity<Object> handleVersionEntityException(ObjectOptimisticLockingFailureException ex) {
-        ex.printStackTrace();
-        ApiErrorDetails apiErrorDetails = new ApiErrorDetails(ApiErrorType.INVALID_REQUEST, ErrorMessage.OLD_VERSION_OBJECT);
-        return ResponseEntity.badRequest().body(apiErrorDetails);
-    }
-
-    @Override
-    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
-                                                               HttpStatus status, WebRequest request) {
-        List<String> errors = new ArrayList<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            errors.add(error.getDefaultMessage());
-        });
-        ApiErrorDetails apiErrorDetails = new ApiErrorDetails(ApiErrorType.INVALID_REQUEST, ErrorMessage.LOGIN_FAILED, errors.get(0));
-        return ResponseEntity.badRequest().body(apiErrorDetails);
-    }
-
 }

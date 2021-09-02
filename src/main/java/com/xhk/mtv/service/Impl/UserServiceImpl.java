@@ -1,51 +1,41 @@
 package com.xhk.mtv.service.Impl;
 
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.QBean;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.xhk.mtv.entity.Account;
+import com.xhk.mtv.error.NotFoundException;
 import com.xhk.mtv.filter.QueryPredicate;
-import com.xhk.mtv.entity.QAccount;
-import com.xhk.mtv.response.UserRes;
+import com.xhk.mtv.payload.request.CreateAccountRequest;
+import com.xhk.mtv.payload.request.RestRequest;
+import com.xhk.mtv.payload.response.UserResponse;
+import com.xhk.mtv.repository.CustomAccountRepository;
 import com.xhk.mtv.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private EntityManager em;
+    private CustomAccountRepository customAccountRepository;
 
     @Override
-    public Page<UserRes> getUsers(QueryPredicate predicate) {
-        JPAQuery<UserRes> query = userQuery();
-        return predicate.fetch(query);
+    public Page<UserResponse> getUsers(QueryPredicate predicate) {
+        return customAccountRepository.findAllUserAsPageable(predicate);
     }
 
     @Override
-    public UserRes getUser(long id) {
-        QAccount account = QAccount.account;
-        JPAQuery<UserRes> query = userQuery().where(account.id.eq(id));
-        return query.fetchOne();
+    public UserResponse getUser(long id) {
+        UserResponse response = customAccountRepository.findUserById(id);
+        if (response == null) {
+            throw new NotFoundException(Account.class, id);
+        }
+
+        return response;
     }
 
-    private JPAQuery<UserRes> userQuery() {
-        QAccount account = QAccount.account;
+    @Override
+    public boolean createUser(RestRequest<CreateAccountRequest> request) {
 
-        QBean<UserRes> userRes = Projections.bean(
-                UserRes.class,
-                account.id,
-                account.firstName,
-                account.lastName,
-                account.phoneNumber,
-                account.email
-        );
-
-        return new JPAQuery<>(em)
-                .select(userRes)
-                .from(account);
+        return false;
     }
 }

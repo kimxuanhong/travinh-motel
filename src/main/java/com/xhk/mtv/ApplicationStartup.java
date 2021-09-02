@@ -9,15 +9,16 @@ import com.xhk.mtv.repository.AccountRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
     private final AccountRepository accountRepository;
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public ApplicationStartup(BCryptPasswordEncoder passwordEncoder, AccountRepository accountRepository) {
+    public ApplicationStartup(PasswordEncoder passwordEncoder, AccountRepository accountRepository) {
         this.passwordEncoder = passwordEncoder;
         this.accountRepository = accountRepository;
     }

@@ -9,12 +9,24 @@ import java.util.Collection;
 
 @Getter
 @Setter
-
 public class CustomUserDetails extends User {
-    private CustomUserInfo customUserInfo;
 
-    public CustomUserDetails(Long id, String name, String phoneNumber, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    private Long id;
+    private String name;
+    private String phoneNumber;
+    private String email;
+
+    public CustomUserDetails(Long id,
+                             String name,
+                             String phoneNumber,
+                             String email,
+                             String password,
+                             Collection<? extends GrantedAuthority> authorities) {
         super(email, password, authorities);
-        this.customUserInfo = new CustomUserInfo(id, name, phoneNumber, email);
+
+        this.id = id;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
     }
 }

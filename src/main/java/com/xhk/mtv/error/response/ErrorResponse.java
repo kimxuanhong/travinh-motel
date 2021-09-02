@@ -1,15 +1,40 @@
 package com.xhk.mtv.error.response;
 
-import com.xhk.mtv.annotation.CustomResponse;
-import lombok.Getter;
-import lombok.Setter;
+import com.xhk.mtv.adapter.RestHolderService;
+import com.xhk.mtv.common.Constants;
+import com.xhk.mtv.error.Status;
+import com.xhk.mtv.payload.response.RestResponse;
+import com.xhk.mtv.payload.response.RestResponseHeader;
 
-@Getter
-@Setter
-@CustomResponse
-public class ErrorResponse<T> extends Response<T> {
-    public ErrorResponse(T data) {
-        this.setStatus(ResponseStatus.FAILED);
-        this.setData(data);
+import java.util.Date;
+
+public class ErrorResponse extends RestResponse<Object> {
+
+    public static ErrorResponse build(Status status, String messageDesc) {
+        RestResponseHeader header = new RestResponseHeader();
+        header.setRsCode(status.code);
+        header.setRsDesc(status.message);
+        header.setProcessTime(RestHolderService.getInstance().calculateProcessTime());
+        header.setRsDate(new Date());
+        header.setServiceId(Constants.SERVICE_ID);
+        header.setDetails(messageDesc);
+
+        ErrorResponse response = new ErrorResponse();
+        response.setHeader(header);
+        return response;
+    }
+
+    public static ErrorResponse build(Status status, Object details) {
+        RestResponseHeader header = new RestResponseHeader();
+        header.setRsCode(status.code);
+        header.setRsDesc(status.message);
+        header.setProcessTime(RestHolderService.getInstance().calculateProcessTime());
+        header.setRsDate(new Date());
+        header.setServiceId(Constants.SERVICE_ID);
+        header.setDetails(details);
+
+        ErrorResponse response = new ErrorResponse();
+        response.setHeader(header);
+        return response;
     }
 }

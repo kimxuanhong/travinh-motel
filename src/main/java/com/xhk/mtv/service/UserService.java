@@ -1,11 +1,15 @@
 package com.xhk.mtv.service;
 
 import com.xhk.mtv.filter.QueryPredicate;
-import com.xhk.mtv.response.UserRes;
+import com.xhk.mtv.payload.request.CreateAccountRequest;
+import com.xhk.mtv.payload.request.RestRequest;
+import com.xhk.mtv.payload.response.UserResponse;
 import org.springframework.data.domain.Page;
 
 public interface UserService {
-    Page<UserRes> getUsers(QueryPredicate predicate);
+    Page<UserResponse> getUsers(QueryPredicate predicate);
 
-    UserRes getUser(long id);
+    UserResponse getUser(long id);
+
+    boolean createUser(RestRequest<CreateAccountRequest> request);
 }
