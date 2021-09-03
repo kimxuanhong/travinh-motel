@@ -11,20 +11,24 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static io.swagger.models.HttpMethod.*;
+import static org.springframework.boot.web.servlet.DispatcherType.*;
+
 @Component
 public class CustomLogInterceptor implements HandlerInterceptor {
 
     @Autowired
-    LoggingService loggingService;
+    private LoggingService loggingService;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
                              @NonNull HttpServletResponse response,
                              @NonNull Object handler) {
-        if (DispatcherType.REQUEST.name().equals(request.getDispatcherType().name())
-                && request.getMethod().equals(HttpMethod.GET.name())) {
+
+        if (REQUEST.name().equals(request.getDispatcherType().name()) && GET.name().equals(request.getMethod())) {
             loggingService.logRequest(request, request.getQueryString());
         }
+
         return true;
     }
 }
