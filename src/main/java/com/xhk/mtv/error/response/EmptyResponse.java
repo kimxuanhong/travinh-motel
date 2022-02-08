@@ -7,7 +7,7 @@ import com.xhk.mtv.payload.response.RestResponseHeader;
 
 import java.util.Date;
 
-import static com.xhk.mtv.error.Status.SUCCESS_CODE;
+import static com.xhk.mtv.error.ResponseStatus.SUCCESS_CODE;
 
 
 public class EmptyResponse extends RestResponse<Object> {

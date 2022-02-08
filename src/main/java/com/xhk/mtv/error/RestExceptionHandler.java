@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.xhk.mtv.common.Constants.EMPTY_STRING;
-import static com.xhk.mtv.error.Status.*;
+import static com.xhk.mtv.error.ResponseStatus.*;
 import static java.util.Optional.ofNullable;
 
 @RestControllerAdvice

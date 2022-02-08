@@ -1,6 +1,6 @@
 package com.xhk.mtv.error;
 
-public enum Status {
+public enum ResponseStatus {
     SUCCESS_CODE("00", "Success!"),
     BUSINESS_LOGIC_ERROR("10", "Business logic exception."),
     INVALID_AUTHORIZATION("10", "Invalid Authorization."),
@@ -12,7 +12,7 @@ public enum Status {
     VALIDATION_EXCEPTION("10", "Validation exception"),
     RESOURCE_NOT_FOUND("10", "Resource not found.");
 
-    Status(String code, String message) {
+    ResponseStatus(String code, String message) {
         this.code = code;
         this.message = message;
     }

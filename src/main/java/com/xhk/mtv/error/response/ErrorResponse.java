@@ -2,7 +2,7 @@ package com.xhk.mtv.error.response;
 
 import com.xhk.mtv.adapter.RestHolderService;
 import com.xhk.mtv.common.Constants;
-import com.xhk.mtv.error.Status;
+import com.xhk.mtv.error.ResponseStatus;
 import com.xhk.mtv.payload.response.RestResponse;
 import com.xhk.mtv.payload.response.RestResponseHeader;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class ErrorResponse extends RestResponse<Object> {
 
-    public static ErrorResponse build(Status status, String messageDesc) {
+    public static ErrorResponse build(ResponseStatus status, String messageDesc) {
         RestResponseHeader header = new RestResponseHeader();
         header.setRsCode(status.code);
         header.setRsDesc(status.message);
@@ -24,7 +24,7 @@ public class ErrorResponse extends RestResponse<Object> {
         return response;
     }
 
-    public static ErrorResponse build(Status status, Object details) {
+    public static ErrorResponse build(ResponseStatus status, Object details) {
         RestResponseHeader header = new RestResponseHeader();
         header.setRsCode(status.code);
         header.setRsDesc(status.message);

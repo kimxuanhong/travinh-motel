@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.Date;
 
-import static com.xhk.mtv.error.Status.SUCCESS_CODE;
+import static com.xhk.mtv.error.ResponseStatus.SUCCESS_CODE;
 
 
 @RestControllerAdvice
