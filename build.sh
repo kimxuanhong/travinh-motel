@@ -1,5 +1,5 @@
 echo ==== Checkout SCM ====
-git reset --hard && git pull origin
+git pull origin
 
 echo ==== Build jar file ====
 mvn clean install -DskipTests
